@@ -50,7 +50,10 @@ CONFIDENCE_DECIMALS = 2
 # ------------------------------------------------------------------
 ALLOWED_EXTENSIONS = {".wav", ".mp3", ".flac", ".m4a"}
 MAX_UPLOAD_MB = 25
-CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
+CORS_ORIGINS = [x.strip() for x in os.environ.get(
+    "CORS_ORIGINS",
+    "http://localhost:5173,http://127.0.0.1:5173"
+).split(",") if x.strip()]
 
 # ------------------------------------------------------------------
 # Training
