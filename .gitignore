@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Backend data
+backend/voiceguard.db
+backend/static/uploads/*
+!backend/models/checkpoints/.gitkeep
+
+# Dataset
+dataset/raw/*
+dataset/processed/*
+!dataset/raw/.gitkeep
+!dataset/processed/.gitkeep
+
+# Training artifacts
+backend/training/runs/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# OS
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+frontend/node_modules/
+frontend/dist/
