@@ -69,15 +69,21 @@ class VoiceGuardInference:
         self.gradcam = GradCAM(self.model, target_layer=self.model.block3)
 
     def _load_checkpoint(self, checkpoint_path: Path):
-        if checkpoint_path.exists():
-            state = torch.load(checkpoint_path, map_location="cpu")
-            self.model.load_state_dict(state.get("model_state_dict", state))
-            print(f"[VoiceGuardInference] Loaded checkpoint from {checkpoint_path}")
-        else:
-            print(f"[VoiceGuardInference] WARNING: no checkpoint found at {checkpoint_path}. "
-                  f"Using randomly initialized weights - run training/train.py first "
-                  f"to produce a real model for production use.")
+        if not checkpoint_path.exists():
+            print(
+                f"[VoiceGuardInference] No trained checkpoint found at {checkpoint_path}; "
+                "using randomly initialized weights. Train a model for meaningful predictions."
+            )
+            return
 
+        state = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
+
+        if "model_state_dict" in state:
+            state = state["model_state_dict"]
+
+        self.model.load_state_dict(state)
+
+        print(f"[VoiceGuardInference] Loaded trained checkpoint from {checkpoint_path}")
     # ------------------------------------------------------------------
     # Rendering helpers
     # ------------------------------------------------------------------
