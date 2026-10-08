@@ -10,7 +10,8 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL || ""}/api`,
-  timeout: 30000,
+  // CPU inference on Render can take longer for clips with multiple windows.
+  timeout: 120000,
 });
 
 export async function predictVoice(file, onUploadProgress) {

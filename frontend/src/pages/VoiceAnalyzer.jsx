@@ -25,7 +25,14 @@ export default function VoiceAnalyzer() {
       });
       setResult(data);
     } catch (err) {
-      setError(err?.response?.data?.detail || "Analysis failed. Please try again.");
+      const detail = err?.response?.data?.detail;
+      if (detail) {
+        setError(detail);
+      } else if (err?.code === "ECONNABORTED") {
+        setError("Analysis is taking longer than expected. Try a shorter audio clip and run it again.");
+      } else {
+        setError("Could not reach the analysis server. Check your connection and try again.");
+      }
     } finally {
       setLoading(false);
       setProgress(0);
